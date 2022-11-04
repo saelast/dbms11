@@ -1,0 +1,59 @@
+> use Madhav
+switched to db Madhav
+> db.create collection("Employee")
+uncaught exception: SyntaxError: unexpected token: identifier :
+@(shell):1:10
+> db.createcollection("Employee")
+uncaught exception: TypeError: db.createcollection is not a function :
+@(shell):1:1
+> db.createCollection("Employee")
+{ "ok" : 1 }
+> db.Employee.insert({Rollno:1,name:"Madhav",class:"compTE",fees:98492})
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Rollno:2,name:"Nandkumar",class:"compTE",fees:98492})
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Rollno:3,name:"Gururaj",class:"compSE",fees:50000})
+WriteResult({ "nInserted" : 1 })
+> db.Employee.insert({Rollno:4,name:"Sanket",class:"compTE",fees:1000})
+WriteResult({ "nInserted" : 1 })
+> db.Employee.find().preety()
+uncaught exception: TypeError: db.Employee.find(...).preety is not a function :
+@(shell):1:1
+> db.Employee.find().pretty()
+{
+ "_id" : ObjectId("634c3add4f5bc8c32b2e55ac"),
+ "Rollno" : 1,
+ "name" : "Madhav",
+ "class" : "compTE",
+ "fees" : 98492
+Name: Madhav Lonkar Rollno:COTC41
+Project-Payroll Management System
+}
+{
+ "_id" : ObjectId("634c3aed4f5bc8c32b2e55ad"),
+ "Rollno" : 2,
+ "name" : "Nandkumar",
+ "class" : "compTE",
+ "fees" : 98492
+}
+{
+ "_id" : ObjectId("634c3b0a4f5bc8c32b2e55ae"),
+ "Rollno" : 3,
+ "name" : "Gururaj",
+ "class" : "compSE",
+ "fees" : 50000
+}
+{
+ "_id" : ObjectId("634c3b2b4f5bc8c32b2e55af"),
+ "Rollno" : 4,
+ "name" : "Sanket",
+ "class" : "compTE",
+ "fees" : 1000
+}
+> var mapfunction1=function(){emit(this.class,this.fees);}
+> var reducefunction1=function(keyclass,valuefees){return Array.sum(valuefees);};
+> db.Employee.mapReduce(mapfunction1,reducefunction1,{out:"final_fees"})
+{ "result" : "final_fees", "ok" : 1 }
+> db.final_fees.find()
+{ "_id" : "compTE", "value" : 197984 }
+{ "_id" : "compSE", "value" : 50000 }
